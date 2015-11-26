@@ -14,7 +14,7 @@ A totally contrived example is below:
     info: [FakeApp][run] User requested 123
     info: [DAL][get] 123
     info: [DAL][get][onGet] 123 retrieved
-    info: [FakeApp][run][onGetWidget] returning widget 123, name 'Foo' 
+    info: [FakeApp][run][onGetWidget] returning widget 123, name 'Foo'
 
 Performance implications? Yes. _Not_ logging at all performs much better (as
 expected). Short of using [dTrace](http://dtrace.org/), this is an unavoidable
@@ -37,6 +37,10 @@ _Code_
     ;
 
     ;(function run() {
+      log.info();
+
+      log.info(null,'Logging an object with winston', {...Complex Object...})
+
       var l = log.info('run', 'I want a pony!');
 
       process.nextTick(function(){
@@ -46,6 +50,8 @@ _Code_
 
 _Output_
 
+    info: [FakeApp]
+    info: [FakeApp] Logging an object with winston { Object Stringified }
     info: [FakeApp][run] I want a pony!
     error: [FakeApp][run] No!
 
@@ -67,7 +73,7 @@ use case. To run the example (which uses
 
 ## Options
 
-By default, stacklog will wrap all stack entries in \[square\] brackets. 
+By default, stacklog will wrap all stack entries in \[square\] brackets.
 To change to a different delimiter, pass an options object to the constructor:
 
     new StackLog(logger, {bd: '(', ed: ')'});
@@ -77,15 +83,15 @@ To change to a different delimiter, pass an options object to the constructor:
 Tests were run on core i7 2012 Macbook Air w/ 8GB ram. Average over 100 runs of
 1000 iterations. There was zero sciences involved in this experiment.
 
-Test - average (microseconds) 
+Test - average (microseconds)
 
 * nolog.js - 1.8
-* console.js - 22041.17 
-* winston.js - 45438.45 
-* stacklogon.js - 77842.35 
-* stacklogoff.js - 14706.28 
+* console.js - 22041.17
+* winston.js - 45438.45
+* stacklogon.js - 77842.35
+* stacklogoff.js - 14706.28
 
-## License 
+## License
 
 (The MIT License)
 
@@ -152,5 +158,3 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                                   //+oysy`    //.-:+oys+-                    
                                                /+/++oyso:                    
                                                   `.`                        
-                                                            
-
